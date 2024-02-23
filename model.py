@@ -3,11 +3,9 @@ import torch.nn as nn
 import torch.optim as optim
 
 from torchvision.models import MobileNet_V3_Small_Weights as mweights
-
 from InceptionNetDecoderBlock import DecoderBlock
 
 import numpy as np
-
 
 ### encoder definition ###
 
@@ -33,7 +31,7 @@ class Decoder(nn.Module):
         super().__init__()
         self.block = DecoderBlock
         
-        self.deconv1 = self.block()
+        self.deconv1 = self.block(in_channels=1, out_channels=2) # TODO: define number of channels
         
     def forward(self, x):
         ### deconv 5 times
