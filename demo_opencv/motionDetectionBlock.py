@@ -6,9 +6,9 @@ class MotionDetector:
         self.delta_time = delta_time
         self.resolution = resolution
         self.forget_percentage = forget_percentage
-        self.frame_difference = np.empty(shape=[ 3, *resolution ])
-        self.prev_frame = np.empty(shape=[ 3, *resolution ])
-        self.frame_cumsum = np.zeros(shape=[ 3, *resolution ])
+        self.frame_difference = np.empty(shape=[ *resolution, 3 ])
+        self.prev_frame = np.empty(shape=[ *resolution, 3 ])
+        self.frame_cumsum = np.zeros(shape=[ *resolution, 3 ])
 
 
     ### set time difference in frames (for subtraction)
@@ -20,9 +20,9 @@ class MotionDetector:
 
     def set_resolution(self, resolution):
         self.resolution = resolution
-        self.frame_difference = np.empty(shape=[ 3, *resolution ])
-        self.prev_frame = np.empty(shape=[ 3, *resolution ])
-        self.frame_cumsum = np.zeros(shape=[ 3, *resolution ])
+        self.frame_difference = np.empty(shape=[ *resolution, 3 ])
+        self.prev_frame = np.empty(shape=[ *resolution, 3 ])
+        self.frame_cumsum = np.zeros(shape=[ *resolution, 3 ])
 
     def get_difference(self, frame: np.ndarray):
         if frame.shape != [ 3, *self.resolution ]:

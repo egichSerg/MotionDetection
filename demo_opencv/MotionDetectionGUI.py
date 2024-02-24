@@ -3,8 +3,9 @@ import cv2 as cv
 
 from motionDetectionBlock import MotionDetector
 
-capture = cv.VideoCapture(0)
+capture = cv.VideoCapture("/home/yoy/Videos/YouTube/Advance RolePlay 7 ｜ Silver ► ВПЕРВЫЕ В GTA SAMP ► #1 [7iNp9daMfMM].mp4")
 ret, frame = capture.read() 
+print(frame.shape)
 
 while ret:
     key = cv.waitKey(20) & 0xff    
