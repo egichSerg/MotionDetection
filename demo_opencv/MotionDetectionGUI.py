@@ -3,14 +3,32 @@ import cv2 as cv
 
 from motionDetectionBlock import MotionDetector
 
-capture = cv.VideoCapture("/home/yoy/Videos/YouTube/Advance RolePlay 7 ｜ Silver ► ВПЕРВЫЕ В GTA SAMP ► #1 [7iNp9daMfMM].mp4")
+# capture = cv.VideoCapture("/home/yoy/Videos/YouTube/Advance RolePlay 7 ｜ Silver ► ВПЕРВЫЕ В GTA SAMP ► #1 [7iNp9daMfMM].mp4")
+capture = cv.VideoCapture(0)
 ret, frame = capture.read() 
-print(frame.shape)
+frame = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
+print('Video resolution: ', frame.shape)
 
+mdetector = MotionDetector(resolution=frame.shape)
+mdetector.set_cumsum_mode(False)
+diff = np.zeros_like(frame)
+
+delta_time = 1
+
+timer = 0
 while ret:
     key = cv.waitKey(20) & 0xff    
     if key == 27:
-        break  
+        break 
+    
+    if timer == delta_time:
+        diff = mdetector.get_difference(frame)
+        timer = 0
 
-    cv.imshow('clip', frame)
+    cv.imshow('clip', diff)
     ret, frame = capture.read()
+    frame = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
+    # _, frame = cv.threshold(frame, 100, 255, cv.THRESH_BINARY)
+    # frame = cv.blur(frame, (30, 30), cv.BORDER_DEFAULT)  
+
+    timer += 1 
