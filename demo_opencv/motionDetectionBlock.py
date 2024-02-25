@@ -9,6 +9,7 @@ class MotionDetector:
         self.frame_difference = np.empty(shape=resolution)
         self.prev_frame = None
         self.frame_cumsum = np.zeros(shape=resolution)
+        self.sens = 30
 
 
     ### set time difference in frames (for subtraction)
@@ -24,6 +25,9 @@ class MotionDetector:
         self.prev_frame = np.empty(shape=resolution)
         self.frame_cumsum = np.zeros(shape=resolution)
 
+    def set_sens(self, new_sens):
+        self.sens = new_sens
+
     def get_difference(self, frame: np.ndarray):
         if frame.shape != self.resolution:
             raise SystemExit(f"Resolution of detector {self.resolution} and image {frame.shape} doesn't match")
@@ -31,8 +35,8 @@ class MotionDetector:
         if self.prev_frame is None:
             self.prev_frame = frame
         
-        self.frame_difference = frame - self.prev_frame
-        _, self.frame_difference = cv.threshold(self.frame_difference, 100, 255, cv.THRESH_TOZERO)
+        self.frame_difference = cv.absdiff(frame, self.prev_frame)
+        # _, self.frame_difference = cv.threshold(self.frame_difference, self.sens, 255, cv.THRESH_TOZERO)
         output = self.frame_difference
 
         if self.cumsum_enabled:
@@ -40,5 +44,8 @@ class MotionDetector:
             output = self.frame_cumsum
 
         self.prev_frame = frame
+
+        output = cv.threshold(self.frame_difference, self.sens, 255, cv.THRESH_BINARY)[1]
+        # output = cv.dilate(output, None, iterations=11)
 
         return output

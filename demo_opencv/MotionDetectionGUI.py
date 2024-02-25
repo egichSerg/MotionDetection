@@ -11,6 +11,7 @@ print('Video resolution: ', frame.shape)
 
 mdetector = MotionDetector(resolution=frame.shape)
 mdetector.set_cumsum_mode(False)
+mdetector.set_sens(30)
 diff = np.zeros_like(frame)
 
 delta_time = 1
@@ -27,8 +28,6 @@ while ret:
 
     cv.imshow('clip', diff)
     ret, frame = capture.read()
-    frame = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
-    # _, frame = cv.threshold(frame, 100, 255, cv.THRESH_BINARY)
-    # frame = cv.blur(frame, (30, 30), cv.BORDER_DEFAULT)  
+    frame = cv.cvtColor(frame, cv.COLOR_BGR2GRAY) 
 
     timer += 1 
