@@ -58,10 +58,12 @@ class MotionDetector:
         cnts = cv.findContours(diff.copy(), cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
         cnts = imutils.grab_contours(cnts)
 
+        frame_ = cv.cvtColor(frame, cv.COLOR_BGR2RGBA)
+
         for cnt in cnts:
             if cv.contourArea(cnt) < self.min_area:
                 continue
             (x, y, w, h) = cv.boundingRect(cnt)
-            cv.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+            cv.rectangle(frame_, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
-        return frame
+        return frame_
