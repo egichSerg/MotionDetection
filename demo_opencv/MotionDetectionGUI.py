@@ -10,7 +10,7 @@ from PIL import Image, ImageTk
 from motionDetectionBlock import MotionDetector
 
 videos = {'web' : 0, 'camera' : '/home/yoy/Videos/YouTube/camera.mp4', 'youtube': "/home/yoy/Videos/YouTube/Advance RolePlay 7 ｜ Silver ► ВПЕРВЫЕ В GTA SAMP ► #1 [7iNp9daMfMM].mp4"}
-video = videos['youtube']
+video = videos['camera']
 
 UseFPSLimiter = True
 if video == videos['web']:
@@ -30,7 +30,7 @@ mdetector.set_cumsum_mode(False)
 mdetector.set_sens(10)
 diff = np.zeros_like(frame)
 
-delta_time = 1
+delta_time = 2
 timer = delta_time
 bbox_list = list()
 
