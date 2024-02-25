@@ -1,8 +1,9 @@
 import numpy as np
 import cv2 as cv
+import imutils
 
 class MotionDetector:
-    def __init__(self, resolution = (640, 480), forget_percentage = 50, cumsum_enabled = True) -> None:
+    def __init__(self, resolution = (640, 480), forget_percentage = 50, min_area_detect = 10000, cumsum_enabled = True) -> None:
         self.cumsum_enabled = cumsum_enabled
         self.resolution = resolution
         self.forget_percentage = forget_percentage
@@ -10,6 +11,7 @@ class MotionDetector:
         self.prev_frame = None
         self.frame_cumsum = np.zeros(shape=resolution)
         self.sens = 30
+        self.min_area = 10000
 
 
     ### set time difference in frames (for subtraction)
@@ -29,6 +31,7 @@ class MotionDetector:
         self.sens = new_sens
 
     def get_difference(self, frame: np.ndarray):
+        frame = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
         if frame.shape != self.resolution:
             raise SystemExit(f"Resolution of detector {self.resolution} and image {frame.shape} doesn't match")
         
@@ -36,7 +39,6 @@ class MotionDetector:
             self.prev_frame = frame
         
         self.frame_difference = cv.absdiff(frame, self.prev_frame)
-        # _, self.frame_difference = cv.threshold(self.frame_difference, self.sens, 255, cv.THRESH_TOZERO)
         output = self.frame_difference
 
         if self.cumsum_enabled:
@@ -45,7 +47,21 @@ class MotionDetector:
 
         self.prev_frame = frame
 
-        output = cv.threshold(self.frame_difference, self.sens, 255, cv.THRESH_BINARY)[1]
-        # output = cv.dilate(output, None, iterations=11)
-
         return output
+    
+    def get_bbox(self, frame: np.ndarray):
+        diff = self.get_difference(frame)
+
+        diff = cv.threshold(diff, self.sens, 255, cv.THRESH_BINARY)[1]
+        diff = cv.dilate(diff, None, iterations=11)
+
+        cnts = cv.findContours(diff.copy(), cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
+        cnts = imutils.grab_contours(cnts)
+
+        for cnt in cnts:
+            if cv.contourArea(cnt) < self.min_area:
+                continue
+            (x, y, w, h) = cv.boundingRect(cnt)
+            cv.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+
+        return frame

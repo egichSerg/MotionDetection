@@ -3,8 +3,9 @@ import cv2 as cv
 
 from motionDetectionBlock import MotionDetector
 
-# capture = cv.VideoCapture("/home/yoy/Videos/YouTube/Advance RolePlay 7 ｜ Silver ► ВПЕРВЫЕ В GTA SAMP ► #1 [7iNp9daMfMM].mp4")
-capture = cv.VideoCapture(0)
+videos = {'web' : 0, 'camera' : '/home/yoy/Videos/YouTube/camera.mp4', 'youtube': "/home/yoy/Videos/YouTube/Advance RolePlay 7 ｜ Silver ► ВПЕРВЫЕ В GTA SAMP ► #1 [7iNp9daMfMM].mp4"}
+
+capture = cv.VideoCapture(videos['youtube'])
 ret, frame = capture.read() 
 frame = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
 print('Video resolution: ', frame.shape)
@@ -23,11 +24,10 @@ while ret:
         break 
     
     if timer == delta_time:
-        diff = mdetector.get_difference(frame)
+        diff = mdetector.get_bbox(frame)
         timer = 0
 
     cv.imshow('clip', diff)
-    ret, frame = capture.read()
-    frame = cv.cvtColor(frame, cv.COLOR_BGR2GRAY) 
+    ret, frame = capture.read() 
 
     timer += 1 
