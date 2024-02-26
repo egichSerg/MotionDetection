@@ -61,7 +61,6 @@ class MotionDetector:
         cnts = cv.findContours(diff.copy(), cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
         cnts = imutils.grab_contours(cnts)
 
-        # frame_ = cv.cvtColor(frame, cv.COLOR_BGR2RGBA)
         bbox_list = list()
 
         for cnt in cnts:
@@ -69,8 +68,6 @@ class MotionDetector:
                 continue
             (x, y, w, h) = cv.boundingRect(cnt)
             bbox_list.append((x, y, w, h))
-
-            # cv.rectangle(frame_, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
         return bbox_list
     
