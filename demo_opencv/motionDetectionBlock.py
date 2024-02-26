@@ -18,8 +18,11 @@ class MotionDetector:
     def set_forget_percentage(self, new_forget_percentage):
         self.forget_percentage = new_forget_percentage
 
-    def set_cumsum_mode(self, cumsum_mode):
-        self.cumsum_enabled = cumsum_mode
+    def change_cumsum_mode(self):
+        self.cumsum_enabled = not self.cumsum_enabled
+
+    def set_cumsum_mode(self, mode):
+        self.cumsum_enabled = mode
 
     def set_resolution(self, resolution):
         self.resolution = resolution
