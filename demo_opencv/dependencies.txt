@@ -1,0 +1,11 @@
+# pip
+
+tkinter
+opencv-python
+numpy
+imutils
+Pillow
+
+# apt (install separably)
+
+python3-pil.imagetk
