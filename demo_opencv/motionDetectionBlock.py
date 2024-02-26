@@ -46,6 +46,8 @@ class MotionDetector:
 
         if self.cumsum_enabled:
             self.frame_cumsum = self.frame_cumsum * (self.forget_percentage / 100) + self.frame_difference
+            self.frame_cumsum = self.frame_cumsum.astype(np.uint8)
+            # self.frame_cumsum = cv.cvtColor(self.frame_cumsum, cv.COLOR_BGR2GRAY)
             output = self.frame_cumsum
 
         self.prev_frame = frame
