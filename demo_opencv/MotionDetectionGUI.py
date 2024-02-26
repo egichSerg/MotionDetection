@@ -9,11 +9,25 @@ from PIL import Image, ImageTk
 
 from motionDetectionBlock import MotionDetector
 
+
+
+### functions ###
+
+
+def calculate():
+      print('Button event!')
+
+
+
+### main ###
+
+
+
 videos = {'web' : 0, 'camera' : '/home/yoy/Videos/YouTube/camera.mp4', 'youtube': "/home/yoy/Videos/YouTube/Advance RolePlay 7 ｜ Silver ► ВПЕРВЫЕ В GTA SAMP ► #1 [7iNp9daMfMM].mp4"}
 video = videos['camera']
 
 UseFPSLimiter = True
-if video == videos['web']:
+if video == 0:
       UseFPSLimiter = False
 
 
@@ -40,12 +54,18 @@ bbox_list = list()
 
 root = Tk()
 root.title('Motion Detection')
+root.columnconfigure(0, weight=1)
+root.rowconfigure(0, weight=1)
 
-app = Frame(root, bg="white")
+app = Frame(root, bg="#748796")
 app.grid()
-# Create a label in the frame
-lmain = Label(app)
-lmain.grid()
+lmain = Label(app, bg="#748796")
+lmain.grid(padx=10, pady=10)
+
+Scale(root, from_=0, to=255, orient=HORIZONTAL, bg="#748796").grid(column=0, row=1, sticky=W, padx = 10, pady=10)
+Scale(root, from_=0, to=42, orient=HORIZONTAL, bg="#748796").grid(column=0, row=1, sticky=E, padx = 10, pady=10)
+
+## ttk.Button(app, text="Calculate", command=calculate).grid(column=1, row=0, sticky=W)
 
 def video_stream():
         
