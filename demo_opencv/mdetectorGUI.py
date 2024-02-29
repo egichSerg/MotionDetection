@@ -177,6 +177,7 @@ btn_cumsum_text.set("Enable cumsum")
 
 window.resizable(False, False)
 
+
 def video_stream():
         
         global timer
